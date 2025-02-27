@@ -26,75 +26,65 @@ VALIDATE(){
     fi
 }
 
-curl -sL https://rpm.nodesource.com/setup_lts.x | bash &>> $LOGFILE
+curl -sL https://rpm.nodesource.com/setup_lts.x | bash &>>$LOGFILE
 
 VALIDATE $? "installing rpm node resource"
 
-yum install nodejs -y &>> $LOGFILE
+yum install nodejs -y &>>$LOGFILE
 
 VALIDATE $? "installing nodejs"
 
 # Need to write a condition to check user is already existed or not
-useradd roboshop &>> $LOGFILE
-if [ $? -eq 0 ]; then
-    echo "yes the user exists"
-else
-    echo "No, the user does not exist"
-fi
+useradd roboshop &>>$LOGFILE
 
 # Need to write a condition to check directory is already existed or not
-mkdir /app &>> $LOGFILE
-if [ $? -eq 0 ]; then
-    echo "yes the user exists"
-else
-    echo "No, the user does not exist"
-fi
+mkdir /app &>>$LOGFILE
 
-curl -o /tmp/catalogue.zip https://roboshop-builds.s3.amazonaws.com/catalogue.zip &>> $LOGFILE
+curl -o /tmp/catalogue.zip https://roboshop-builds.s3.amazonaws.com/catalogue.zip &>>$LOGFILE
 
 VALIDATE $? "downloading catalogue service"
 
-cd /app &>> $LOGFILE
+cd /app &>>$LOGFILE
 
 VALIDATE $? "moving into app directory"
 
-unzip /tmp/catalogue.zip &>> $LOGFILE
+unzip /tmp/catalogue.zip &>>$LOGFILE
 
 VALIDATE $? "unziping the catalouge file"
 
-cd /app &>> $LOGFILE
+cd /app &>>$LOGFILE
 
 VALIDATE $? "moving into app directory"
 
-npm install &>> $LOGFILE
+npm install &>>$LOGFILE
 
 VALIDATE $? "installing the npm"
 
-cp /home/centos/roboshop-shell/catalogue.servuce /etc/systemd/system/catalogue.service &>> $LOGFILE
+cp /home/centos/roboshop-shell/catalogue.servuce /etc/systemd/system/catalogue.service &>>$LOGFILE
 
 VALIDATE $? "copying the catalouge.service"
 
-systemctl daemon-reload &>> $LOGFILE
+systemctl daemon-reload &>>$LOGFILE
 
 VALIDATE $? "doing the daemon-reload"
 
-systemctl enable catalogue &>> $LOGFILE
+systemctl enable catalogue &>>$LOGFILE
 
 VALIDATE $? "enabling the catalogue service"
 
-systemctl start catalogue &>> $LOGFILE
+systemctl start catalogue &>>$LOGFILE
 
 VALIDATE $? "starting the catalogue service"
 
-cp /home/centos/roboshop-shell/mongo.rep /etc/yum.repos.d/mongo.repo &>> $LOGFILE
+cp /home/centos/roboshop-shell/mongo.rep /etc/yum.repos.d/mongo.repo &>>$LOGFILE
 
 VALIDATE $? "starting the catalogue service"
 
-yum install mongodb-org-shell -y &>> $LOGFILE
+yum install mongodb-org-shell -y &>>$LOGFILE
 
 VALIDATE $? "installing the mongodb-org-shell"
 
-mongo --host mongodb.masterdevops.site </app/schema/catalogue.js &>> $LOGFILE
+mongo --host mongodb.masterdevops.site </app/schema/catalogue.js &>>$LOGFILE
 
 VALIDATE $? "loading the schema"
 
