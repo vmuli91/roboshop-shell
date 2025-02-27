@@ -36,9 +36,19 @@ VALIDATE $? "installing nodejs"
 
 # Need to write a condition to check user is already existed or not
 useradd roboshop &>>$LOGFILE
+if [ $? -eq 0 ]; then
+    echo "yes the user exists"
+else
+    echo "No, the user does not exist"
+fi
 
 # Need to write a condition to check directory is already existed or not
 mkdir /app &>>$LOGFILE
+if [ $? -eq 0 ]; then
+    echo "yes the user exists"
+else
+    echo "No, the user does not exist"
+fi
 
 curl -o /tmp/catalogue.zip https://roboshop-builds.s3.amazonaws.com/catalogue.zip &>>$LOGFILE
 
